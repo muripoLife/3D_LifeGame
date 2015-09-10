@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-public class Cell : MonoBehaviour {
+public class Cell : MonoBehaviour
+{
 	public bool Living { get; private set; } // このセルが生存状態か
 
 	private GameObject death_cell; // 死滅時
@@ -17,7 +18,9 @@ public class Cell : MonoBehaviour {
 		Living = false;
 	}
 	
-	void Update () {
+	// アップデート
+	void Update ()
+	{
 		Living = living_cell.activeSelf;
 	}
 

@@ -3,14 +3,13 @@ using System.Collections;
 
 public class LifeGame : MonoBehaviour
 {
-	private const float CELL_SIZE = 1f;  // セルのサイズ
+	private const float CELL_SIZE = 1f; // セルのサイズ
+	public int gridSize = 100;          // グリッドの一辺のセル数
+	public GameObject cellPrefab;       // セルのプレハブ
+	private Cell[,] cells;              // グリッド状のセル
 
-	public int gridSize = 100;             // グリッドの一辺のセル数
-	public GameObject cellPrefab;         // セルのプレハブ
-
-	private Cell[,] cells;                // グリッド状のセル
-
-	void Start () {
+	void Start ()
+	{
 		// グリッド状にセルを作成
 		cells = new Cell[gridSize, gridSize];
 		for(int x = 0; x < gridSize; x++)
@@ -35,21 +34,9 @@ public class LifeGame : MonoBehaviour
 	void Update ()
 	{
 		// クリックしたセルの生存/死滅を切り替える
-		if(Input.GetMouseButtonDown(0))
+		if(Input.GetMouseButton(0))
 		{
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			RaycastHit hit = new RaycastHit();
-
-			if(Physics.Raycast(ray, out hit))
-			{
-				Cell cell = hit.collider.gameObject.transform.parent.GetComponent<Cell>();
-				if(cell.Living)
-				{
-					cell.Die();
-				}else{
-					cell.Birth();
-				}
-			}
+			ClickLifeOrDead ();
 		}
 
 		// 「S」キーで開始
@@ -63,6 +50,13 @@ public class LifeGame : MonoBehaviour
 		{
 			StopAllCoroutines ();
 		}
+
+		// ランダムに点を打つ
+		if(Input.GetKeyDown(KeyCode.R))
+		{
+			StartCoroutine (RandomCell ());
+		}
+
 	}
 
 	/// <summary>
@@ -82,16 +76,39 @@ public class LifeGame : MonoBehaviour
 				}
 			}
 			// ちょっと待つ
-			yield return new WaitForSeconds(0.3f);
+			yield return new WaitForSeconds(0.01f);
 		}
 	}
+
+	/// <summary>
+	/// クリックしたセルの生存/死滅を切り替える
+	/// </summary>
+	public void ClickLifeOrDead ()
+	{
+		// クリックしたセルの生存/死滅を切り替える
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit = new RaycastHit();
+
+		if(Physics.Raycast(ray, out hit))
+		{
+			Cell cell = hit.collider.gameObject.transform.parent.GetComponent<Cell>();
+			if(cell.Living)
+			{
+				cell.Die();
+			}else{
+				cell.Birth();
+			}
+		}
+	}
+
 
 	/// <summary>
 	/// セルの状態を更新
 	/// </summary>
 	/// <param name="x">The x coordinate.</param>
 	/// <param name="z">The z coordinate.</param>
-	private void UpdateCell(int cellX, int cellZ) {
+	private void UpdateCell(int cellX, int cellZ)
+	{
 		// 周囲の生存セル数
 		int count = 0;
 		for (int x = cellX - 1; x <= cellX + 1; x++) {
@@ -118,6 +135,30 @@ public class LifeGame : MonoBehaviour
 			if (count == 3) {
 				cell.Birth ();
 			}
+		}
+	}
+
+	/// <summary>
+	/// ランダムにセルを配置する
+	/// </summary>
+	/// <param name="x">The x coordinate.</param>
+	/// <param name="z">The z coordinate.</param>
+	private IEnumerator RandomCell()
+	{
+		// セルをランダムに配置
+		for(int i = 0; i < Random.Range(500, 800); i++)
+		{
+			int xRam = Random.Range(0, 100);
+			int zRam = Random.Range(0, 100);
+			Cell cell = cells [xRam, zRam];
+			if(cell.Living)
+			{
+				cell.Die();
+			}else{
+				cell.Birth();
+			}
+			// ちょっと待つ
+			yield return new WaitForSeconds(0.001f);
 		}
 	}
 
