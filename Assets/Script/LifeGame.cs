@@ -158,7 +158,7 @@ public class LifeGame : MonoBehaviour
 				cell.Birth();
 			}
 			// ちょっと待つ
-			yield return new WaitForSeconds(0.001f);
+			yield return new WaitForSeconds(0.0001f);
 		}
 	}
 
