@@ -75,8 +75,10 @@ public class LifeGame : MonoBehaviour
 					UpdateCell(x,z);
 				}
 			}
+
 			// ちょっと待つ
-			yield return new WaitForSeconds(0.01f);
+			yield return new WaitForSeconds(0.1f);
+
 		}
 	}
 
