@@ -8,7 +8,7 @@ public class LifeGame : MonoBehaviour
 	public GameObject cellPrefab;       // セルのプレハブ
 	private Cell[,] cells;              // グリッド状のセル
 
-	void Start ()
+    void Start ()
 	{
 		// グリッド状にセルを作成
 		cells = new Cell[gridSize, gridSize];
@@ -27,6 +27,7 @@ public class LifeGame : MonoBehaviour
 
 				// Cellをセット
 				cells[x,z]=obj.GetComponent<Cell>();
+				
 			}
 		}
 	}
@@ -51,10 +52,11 @@ public class LifeGame : MonoBehaviour
 			StopAllCoroutines ();
 		}
 
-		// ランダムに点を打つ
-		if(Input.GetKeyDown(KeyCode.R))
+        // 「R」キーで開始
+        if (Input.GetKeyDown(KeyCode.R))
 		{
-			StartCoroutine (RandomCell ());
+            // ランダムに点を打つ
+            StartCoroutine(RandomCell ());
 		}
 
 	}
@@ -76,8 +78,11 @@ public class LifeGame : MonoBehaviour
 				}
 			}
 
-			// ちょっと待つ
-			yield return new WaitForSeconds(0.1f);
+            // 世代数の更新
+            GetComponent<Generation>().GenerationNum();
+
+            // ちょっと待つ
+            yield return new WaitForSeconds(0.5f);
 
 		}
 	}

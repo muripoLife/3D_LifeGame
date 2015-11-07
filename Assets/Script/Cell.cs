@@ -1,6 +1,13 @@
-using UnityEngine;
-using System.Collections;
+/*
+名前空間読み込み
+*/
+using UnityEngine;                          // 名前空間UnityEngineの読込
+using System.Collections;                   // 名前空間SystemのクラスCollectionsの読込
 
+/*
+クラスの定義
+MonoBehaviour:全てのスクリプトから派生するベースクラス
+*/
 public class Cell : MonoBehaviour
 {
 	public bool Living { get; private set; } // このセルが生存状態か
