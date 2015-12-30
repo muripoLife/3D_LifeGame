@@ -8,7 +8,7 @@ public class LifeGame : MonoBehaviour
 	public GameObject cellPrefab;       // セルのプレハブ
 	private Cell[,] cells;              // グリッド状のセル
 
-    void Start ()
+	void Start ()
 	{
 		// グリッド状にセルを作成
 		cells = new Cell[gridSize, gridSize];
